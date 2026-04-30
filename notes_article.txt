@@ -1,0 +1,51 @@
+On commence par la b:
+
+Thèse Bourinet Mathis:
+
+L'IA agentique est un système logiciel conçu pour interagir avec les données et les outils sans intervention humaine, ou presque
+
+Système Multi-agent est composé de plusieurs agents d'intelligence artificielle (IA) travaillant ensemble pour accomplir des tâches au nom d'un utilisateur ou d'un autre système. 
+
+Un agent cognitif est défini comme une entité intelligente capable de raisonner, d'apprendre de l'expérience, de s'expliquer, d'avoir conscience de ses capacités et de réagir efficacement aux situations imprévues
+
+L'IA agentive est un sous-ensemble de l'IA générative qui se concentre sur l'orchestration et l'exécution d'agents utilisant des LLM comme "cerveau" pour effectuer des actions à l'aide d'outils.
+
+
+donc une IA agentique c'est plus des ia comme siri ou des bots dans des jeux vidéos ou des capteurs, moteur d'inférence pour raisonner, des règles logiques, des arbres de décision
+
+
+alors que agentic AI désigne plutôt des sous catégories d'IA avancée comme les LLM(gpt, deepseek, llama).
+une classe émergente d'architectures intelligentes dans laquelle de multiples agents 
+spécialisés collaborent pour atteindre des objectifs complexes. Ces systèmes marquent 
+un changement caractérisé par la collaboration multi-agents.
+
+
+la différence entre les 2 est dans la communication entre d'autres agents ce que ne fait pas le simple agent qui reste dans son environnement alors que le système multi-agent lui va communiquer avec d'autres agents partager des informations et en récupérer.
+
+les AI Agents excellent dans l'automatisation de tâches spécifiques grâce à 
+l'intégration d'outils et de LLM. L'IA Agentique ouvre la voie à des systèmes collaboratifs 
+complexes capables de décomposer et d'exécuter des objectifs de haut niveau grâce à 
+la coordination multi- agents et la mémoire partagée.
+
+ Planifier une séquence d'actions structurées 
+ Prendre des décisions basées sur l'analyse de contexte 
+ Interagir avec des outils externes (API, fonctions personnalisées, protocoles 
+comme MCP) 
+ Maintenir une mémoire de ses interactions et apprentissages 
+ Organiser une séquence d'actions cohérente vers un objectif 
+ Réagir à des événements en temps réel 
+ Déléguer des tâches à d'autres agents dans un système multi-agents 
+
+
+article en anglais:
+
+En gros les multi-agents sont l'amélioration des agents simples, plus efficace et plus complexe 
+
+
+sources:
+https://naaia.ai/agents-ia-vs-ia-agentique-differences-definition-2025/
+
+https://www.louisbouchard.ca/blog-ia/agent-ou-multi-agents-
+
+h:
+L'IA agentive est un sous-ensemble de l'IA générative qui se concentre sur l'orchestration et l'exécution d'agents utilisant des LLM comme "cerveau" pour effectuer des actions à l'aide d'outils.
