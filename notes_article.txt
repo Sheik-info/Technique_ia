@@ -37,9 +37,60 @@ comme MCP)
  Déléguer des tâches à d'autres agents dans un système multi-agents 
 
 
-article en anglais:
 
-En gros les multi-agents sont l'amélioration des agents simples, plus efficace et plus complexe 
+
+https://naaia.ai/agents-ia-vs-ia-agentique-differences-definition-2025/
+
+Les agents IA renvoient à la notion d’agentivité, c’est-à-dire la capacité d’un système à :
+
+Agir de façon autonome,
+Initier des actions,
+Planifier des séquences,
+S’adapter à des contextes changeants,
+Poursuivre des objectifs de haut niveau sans supervision humaine continue.
+
+
+L’IA agentique prolonge et dépasse ce cadre. Selon la taxonomie proposée par Sapkota et al. (2025), l’IA agentique constitue un changement de paradigme par rapport aux agents d’IA traditionnels. Elle se caractérise notamment par :
+
+La collaboration entre plusieurs agents au sein d’un même système,
+La décomposition dynamique des tâches en sous-tâches adaptées au contexte,
+L’existence d’une mémoire persistante permettant d’exploiter l’historique sur le long terme,
+Une autonomie orchestrée, c’est-à-dire structurée et coordonnée, qui dépasse les capacités d’un agent isolé
+
+
+l’IA agentique inclut toujours des agents d’IA, mais que tous les agents d’IA ne font pas partie de systèmes agentiques
+
+Les agents IA sont orientés tâche : ils exécutent ce pour quoi ils sont programmés, souvent avec des conditions bien définies. Ils disposent d’une prise d’initiative limitée.
+Exemple : un agent IA programmé pour répondre à un type de formulaire
+
+L’IA agentique est orientée objectif : elle peut recevoir un objectif à plus long terme ou plus général, et déterminer comment l’atteindre, souvent en décomposant l’objectif en sous-objectifs, en adaptant son plan.
+Exemple : un système d’IA agentique capable de gérer un workflow complet pour optimiser le processus de gestion des sinistres dans une compagnie d’assurance
+
+
+l'agent ia dépend de son environnement, alors que l'ia agentique a une capacité d'apprentissage et de mémoire et de collaboration 
+
+
+https://www.louisbouchard.ca/blog-ia/agent-ou-multi-agents-
+
+Agent unique préférer si
+
+Tâches linéaires et prévisibles
+Raisonnement cohérent du début à la fin
+Même type de logique
+
+
+Multi-agents
+
+Utile seulement si :
+
+Tâche avec modes de raisonnement très différents
+
+Agent unique suffit dans la majorité des cas
+Multi-agents = utile mais rare
+La bonne approche :
+Comprendre la tâche
+Commencer simple
+Complexifier seulement si nécessaire
 
 
 sources:
