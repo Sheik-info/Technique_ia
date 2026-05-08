@@ -5,8 +5,6 @@ import tools.Offre;
 
 import java.util.*;
 
-import static java.lang.Math.random;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -42,7 +40,10 @@ public class Main {
                     int prix = 100 + rand.nextInt(400);
 
                     Offre offre = org.proposerOffre(f, prix);
-                    f.recevoirOffre(offre);
+
+                    if (offre != null) {
+                        f.recevoirOffre(offre);
+                    }
                 }
             }
 
@@ -54,7 +55,7 @@ public class Main {
             // PHASE 3 : Vente aux personnes
             for (Fournisseur f : fournisseurs) {
 
-                if (f.aDesBillets()) continue;
+                if (f.aPasDeBillets()) continue;
 
                 List<Personne> interesse = new ArrayList<>();
 
@@ -74,12 +75,12 @@ public class Main {
             }
 
         }
-        personnes.sort(Comparator.comparing(Personne::getBudget).reversed());
+        personnes.sort(Comparator.comparing(Personne::getNbBillets).reversed());
         organismes.sort(Comparator.comparing(Organisme::getBudget).reversed());
         fournisseurs.sort(Comparator.comparing(Fournisseur::getBudget).reversed());
         for(int i=0; i<=2; ++i) {
             System.out.println("gagnant personne n°"
-                    +personnes.get(i).getId() +": " + personnes.get(i).getBudget());
+                    +personnes.get(i).getId() +": " + personnes.get(i).getNbBillets() + " billets");
             System.out.println("gagnant organisme n°"
                     +organismes.get(i).getId() +": " + organismes.get(i).getBudget());
             System.out.println("gagnant fournisseur n°"

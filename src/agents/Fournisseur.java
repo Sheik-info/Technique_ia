@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Collections;
 
 import tools.*;
 
@@ -32,6 +33,7 @@ public class Fournisseur extends Agent {
     }
 
     public void ajouterOffre(Billet offre) {
+
         billets.add(offre);
     }
 
@@ -83,84 +85,77 @@ public class Fournisseur extends Agent {
 
         Billet billet = billets.getFirst();
 
+        // mélange pour éviter le biais des ids
+        Collections.shuffle(interesse);
+
         while (!interesse.isEmpty() && billet.getNbPersonnesMax() > 0) {
 
             int prixCourant = billet.getPrix();
+
             Personne meilleur = null;
-            boolean changement = true;
+            int meilleureOffre = prixCourant;
 
-            //phase de surenchère
-            while (changement) {
-                changement = false;
+            // vraie phase d'enchère
+            for (Personne p : interesse) {
 
-                for (Personne p : interesse) {
+                // la personne propose une surenchère
+                int offre = p.surencherir(prixCourant);
 
-                    if (p.getPrefer() != this.id) continue;
+                // refuse d'acheter
+                if (offre == -1) {
+                    continue;
+                }
 
-                    int decision = p.decision(prixCourant);
-
-                    // refuse
-                    if (decision == 0) continue;
-
-                    // accepte sans surenchérir
-                    if (decision == 1) {
-                        if (meilleur == null) {
-                            meilleur = p;
-                        }
-                    }
-
-                    // surenchérit
-                    if (decision == 2 && p.getBudget() > prixCourant) {
-
-                        int increment = Math.max(10, prixCourant / 10);
-                        int nouveauPrix = prixCourant + increment;
-
-                        if (nouveauPrix <= p.getBudget()) {
-                            prixCourant = nouveauPrix;
-                            meilleur = p;
-                            changement = true;
-                        }
-                    }
+                // meilleure offre trouvée
+                if (offre > meilleureOffre && offre <= p.getBudget()) {
+                    meilleureOffre = offre;
+                    meilleur = p;
                 }
             }
 
-            //vente finale
-            if (meilleur != null && meilleur.getBudget() >= prixCourant) {
-
-                int prix = prixCourant;
-
-                int partOrganisme = (int)(prix * 0.40);
-                int partFournisseur = prix - partOrganisme;
-
-                meilleur.offreAcceptee(billet);
-
-                billet.getOrganisme().rente(partOrganisme);
-                budget += partFournisseur;
-
-                billet.placeReservee();
-
-                System.out.println("Billet vendu à " + meilleur.getId() + " pour " + prix);
+            // personne ne veut acheter
+            if (meilleur == null) {
+                System.out.println("Personne ne veut acheter le billet");
+                break;
             }
 
-            // rotation de la liste
-            Personne p = interesse.getFirst();
-            interesse.removeFirst();
-            interesse.addLast(p);
+            // vente finale
+            int partOrganisme = (int)(meilleureOffre * 0.40);
+            int partFournisseur = meilleureOffre - partOrganisme;
+
+            meilleur.offerAccepted(meilleureOffre);
+
+            billet.getOrganisme().rente(partOrganisme);
+            budget += partFournisseur;
+
+            billet.placeReservee();
+
+            System.out.println(
+                    "Billet vendu à "
+                            + meilleur.getId()
+                            + " pour "
+                            + meilleureOffre
+            );
+
+            // on retire le gagnant pour éviter
+            // qu'il achète toutes les places
+            interesse.remove(meilleur);
         }
 
+        // billet entièrement vendu
         if (billet.getNbPersonnesMax() == 0) {
             billets.removeFirst();
         }
     }
 
 
-    public boolean aDesBillets() {
+    public boolean aPasDeBillets() {
 
         return billets == null || billets.isEmpty();
     }
 
     public Billet getBilletCourant() {
-        if (aDesBillets()) return null;
+        if (aPasDeBillets()) return null;
         return billets.getFirst();
     }
 

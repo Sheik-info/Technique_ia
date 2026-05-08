@@ -21,13 +21,18 @@ public class Organisme extends Acheteur{
 
     @Override
     public Offre proposerOffre(Fournisseur exp, int price) {
+        if(price <= budget) {
+            return new Offre(this, price);
+        }
+
         return null;
     }
+
 
     @Override
     public Offre proposerOffre(Fournisseur exp, int price, List<Organisme> orga) {
         System.out.println("Je propose une offre");
-        if(price < budget) {
+        if(price <= budget) {
             return new Offre(this, price);
         }
         return new OffreCoalition(this,orga);

@@ -9,14 +9,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Personne extends Acheteur {
 
-
-    int prefere;
     private int nbBillets;
 
     public Personne(int id, int budget) {
         super(id, budget+ThreadLocalRandom.current().nextInt(0, budget+1));
         this.strat = new Strategie();
-        prefere = ThreadLocalRandom.current().nextInt(0, 10 + 1);
     }
 
     @Override
@@ -38,13 +35,14 @@ public class Personne extends Acheteur {
     }
 
     public void salaire() {
-        budget += 300;
+        budget += 50;
     }
 
-    public void offreAcceptee(Billet billet) {
-        budget -= billet.getPrix();
+    public void offerAccepted(int prixFinal) {
+        budget -= prixFinal;
         nbBillets++;
     }
+
     public int decision(int offre) {
         return strat.decision(offre,budget);
     }
@@ -69,9 +67,6 @@ public class Personne extends Acheteur {
         }
 
         return total;
-    }
-    public int getPrefer() {
-        return prefere;
     }
 
     public int surencherir(int prixActuel) {
