@@ -46,4 +46,8 @@ public class Strategie {
             return 2;
         }
     }
+
+    public void reset() {
+        nbOffres = 0;
+    }
 }
