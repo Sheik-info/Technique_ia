@@ -5,6 +5,7 @@ import tools.Offre;
 import tools.Strategie;
 
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Personne extends Acheteur {
@@ -35,7 +36,8 @@ public class Personne extends Acheteur {
     }
 
     public void salaire() {
-        budget += 50;
+        Random rand = new Random();
+        budget += 50 + rand.nextInt(1400);
     }
 
     public void offerAccepted(int prixFinal) {
