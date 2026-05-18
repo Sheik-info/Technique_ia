@@ -1,10 +1,6 @@
 package agents;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Collections;
+import java.util.*;
 
 import tools.*;
 
@@ -23,13 +19,6 @@ public class Fournisseur extends Agent {
     @Override
     public void recevoirOffre(Offre m) {
         offres.add(m);
-    }
-
-
-    @Override
-    public Offre proposerOffre(Fournisseur exp, int price) {
-        //billets.add(new Billet())
-        return null;
     }
 
     public void ajouterOffre(Billet offre) {
@@ -56,27 +45,13 @@ public class Fournisseur extends Agent {
         dt = c.getTime();
         ajouterOffre(new Billet(new Date(),dt,maximum.etat(),maximum.getExpediteur()));
 
-        maximum.getExpediteur().offreAcceptee(maximum);
+        maximum.getExpediteur().offreAcceptee(maximum.etat());
 
-        System.out.println("une offre a ete acceptee");
-        //une contribution 10% à chaque vente de son billet
         offres.clear();
     }
 
-    public Offre etatOffres() {
-        if (offres == null || offres.isEmpty()) {
-            return null;
-        }
+    public void enchereOrganismesCoalition(List<Organisme> organismes) {
 
-        Offre maximum = offres.getFirst();
-
-        for (Offre offre : offres) {
-            if (offre.etat() > maximum.etat()) {
-                maximum = offre;
-            }
-        }
-
-        return maximum;
     }
 
     public void proposerBillet(List<Personne> interesse) {
@@ -115,7 +90,6 @@ public class Fournisseur extends Agent {
 
             // personne ne veut acheter
             if (meilleur == null) {
-                System.out.println("Personne ne veut acheter le billet");
                 break;
             }
 
@@ -161,5 +135,80 @@ public class Fournisseur extends Agent {
 
     public int getBudget() {
         return budget;
+    }
+
+    public void enchereOrganismes(List<Organisme> organismes) {
+
+        List<Organisme> participants =
+                new ArrayList<>(organismes);
+
+        int prixCourant = 100;
+
+        Organisme meilleur = null;
+
+        boolean progression = true;
+
+        while (progression) {
+
+            progression = false;
+
+            for (Organisme org : participants) {
+
+                int offre = org.surencherir(prixCourant);
+
+                if (offre == -1) {
+                    continue;
+                }
+
+                if (offre > prixCourant) {
+
+                    prixCourant = offre;
+                    meilleur = org;
+
+                    progression = true;
+
+                    System.out.println(
+                            "Organisme "
+                                    + org.getId()
+                                    + " surenchérit à "
+                                    + offre
+                    );
+                }
+            }
+        }
+
+        if (meilleur == null) {
+            return;
+        }
+
+        Date debut = new Date();
+
+        Calendar c = Calendar.getInstance();
+
+        c.setTime(debut);
+
+        c.add(Calendar.DATE, 7);
+
+        Date fin = c.getTime();
+
+        ajouterOffre(
+                new Billet(
+                        debut,
+                        fin,
+                        prixCourant,
+                        meilleur
+                )
+        );
+
+        meilleur.offreAcceptee(prixCourant);
+
+        budget += prixCourant;
+
+        System.out.println(
+                "Billet vendu à organisme "
+                        + meilleur.getId()
+                        + " pour "
+                        + prixCourant
+        );
     }
 }

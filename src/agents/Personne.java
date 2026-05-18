@@ -1,6 +1,5 @@
 package agents;
 
-import tools.Billet;
 import tools.Offre;
 import tools.Strategie;
 
@@ -22,16 +21,7 @@ public class Personne extends Acheteur {
     }
 
     @Override
-    public Offre proposerOffre(Fournisseur exp, int price) {
-        return null;
-    }
-
-    @Override
     public Offre proposerOffre(Fournisseur exp, int price, List<Organisme> orga) {
-        return null;
-    }
-
-    protected Offre soumettreOffre(Agent fournisseur, int pr) {
         return null;
     }
 
@@ -45,22 +35,6 @@ public class Personne extends Acheteur {
         nbBillets++;
     }
 
-    public int decision(int offre) {
-        return strat.decision(offre,budget);
-    }
-    public int contribution(int prixBillet) {
-        int vd = strat.valeurDepart(budget, prixBillet);
-        if (vd == -1) return 0;
-
-        int offre = vd;
-        int nouvelleOffre;
-
-        while ((nouvelleOffre = strat.valeurOffre(offre, vd)) != -1) {
-            offre = nouvelleOffre;
-        }
-
-        return offre;
-    }
     public static int cooperation(Personne[] groupe, int prixBillet) {
         int total = 0;
 

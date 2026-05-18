@@ -33,26 +33,18 @@ public class Main {
 
             System.out.println("TOUR " + tour + ":");
 
-            // PHASE 1 : Organismes proposent
-            for (Organisme org : organismes) {
-                for (Fournisseur f : fournisseurs) {
+            // PHASE 1 : enchères organismes
+            for (Fournisseur f : fournisseurs) {
 
-                    int prix = 100 + rand.nextInt(400);
-
-                    Offre offre = org.proposerOffre(f, prix);
-
-                    if (offre != null) {
-                        f.recevoirOffre(offre);
-                    }
+                if (tour < 5) {
+                    f.enchereOrganismes(organismes);
+                }
+                else {
+                    f.enchereOrganismesCoalition(organismes);
                 }
             }
 
-            // PHASE 2 : Fournisseurs choisissent
-            for (Fournisseur f : fournisseurs) {
-                f.accepterOffre();
-            }
-
-            // PHASE 3 : Vente aux personnes
+            // PHASE 2 : Vente aux personnes
             for (Fournisseur f : fournisseurs) {
 
                 if (f.aPasDeBillets()) continue;

@@ -19,5 +19,4 @@ public abstract class Agent {
 
     public abstract void recevoirOffre(Offre m);
 
-    public abstract Offre proposerOffre(Fournisseur exp, int price);
 }

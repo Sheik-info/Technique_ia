@@ -26,15 +26,27 @@ public abstract class Acheteur extends Agent {
     @Override
     public abstract void recevoirOffre(Offre m);
 
-    @Override
-    public abstract Offre proposerOffre(Fournisseur exp, int price);
-
     public abstract Offre proposerOffre(Fournisseur exp, int price, List<Organisme> orga);
-
-    protected abstract Offre soumettreOffre(Agent fournisseur, int pr);
 
     public int getBudget() {
         return budget;
+    }
+
+    public int decision(int price) {
+        return strat.decision(price,budget);
+    }
+    public int contribution(int prixBillet) {
+        int vd = strat.valeurDepart(budget, prixBillet);
+        if (vd == -1) return 0;
+
+        int offre = vd;
+        int nouvelleOffre;
+
+        while ((nouvelleOffre = strat.valeurOffre(offre, vd)) != -1) {
+            offre = nouvelleOffre;
+        }
+
+        return offre;
     }
 
 }
