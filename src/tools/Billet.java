@@ -10,17 +10,29 @@ public class Billet {
     int prix;
     int nbPersonnesMax=30;
     private Organisme organisme;
+    private Coalition coalition;
+
 
     public Billet(Date d, Date a, int pr, Organisme or) {
         this.depart = d;
         this.arrivee = a;
         this.prix = pr;
         this.organisme = or;
+        this.coalition = null;
 
     }
+    public Billet(Date d,
+                  Date a,
+                  int pr,
+                  Coalition coalition) {
 
-    Billet setBillet(Date d, Date a, int pr, Organisme or) {
-        return new Billet(d,a,pr,or);
+        this.depart = d;
+        this.arrivee = a;
+        this.prix = pr;
+
+        this.coalition = coalition;
+
+        this.organisme = null;
     }
 
     public int getNbPersonnesMax() {
@@ -34,7 +46,16 @@ public class Billet {
     public int getPrix() {
         return prix;
     }
+
     public Organisme getOrganisme() {
         return organisme;
+    }
+
+    public Coalition getCoalition() {
+        return coalition;
+    }
+
+    public boolean appartientCoalition() {
+        return coalition != null;
     }
 }

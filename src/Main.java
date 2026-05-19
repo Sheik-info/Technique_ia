@@ -37,6 +37,7 @@ public class Main {
             for (Fournisseur f : fournisseurs) {
 
                 if (tour < 5) {
+                    System.out.println("tour" + tour);
                     f.enchereOrganismes(organismes);
                 }
                 else {
@@ -73,8 +74,16 @@ public class Main {
         for(int i=0; i<=2; ++i) {
             System.out.println("gagnant personne n°"
                     +personnes.get(i).getId() +": " + personnes.get(i).getNbBillets() + " billets");
-            System.out.println("gagnant organisme n°"
-                    +organismes.get(i).getId() +": " + organismes.get(i).getBudget());
+
+            if(organismes.get(i).getCoalition()) {
+                System.out.print("gagnant organisme coalition ");
+                organismes.get(i).getMembres();
+                System.out.println(" : " + organismes.get(i).budgetCoalition() + " €");
+            }
+            else {
+                System.out.println("gagnant organisme n°"
+                        +organismes.get(i).getId() +": " + organismes.get(i).getBudget());
+            }
             System.out.println("gagnant fournisseur n°"
                     +fournisseurs.get(i).getId() +": " + fournisseurs.get(i).getBudget());
         }

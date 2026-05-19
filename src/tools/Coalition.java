@@ -16,8 +16,10 @@ public class Coalition {
     }
 
     public void ajouterMembre(Organisme o) {
-        membres.add(o);
-        o.setCoalition(this);
+        if(!membres.contains(o)) {
+            membres.add(o);
+            o.setCoalition(this);
+        }
     }
 
     public int getId() {
@@ -43,7 +45,16 @@ public class Coalition {
         int part = montant / membres.size();
 
         for (Organisme o : membres) {
-            o.offreAcceptee(o.getBudget() - part);
+            o.retirerBudget(part);
+        }
+    }
+
+    public void renteCoalition(int montant) {
+
+        int part = montant / membres.size();
+
+        for (Organisme o : membres) {
+            o.ajouterBudget(part);
         }
     }
 }

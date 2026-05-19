@@ -26,32 +26,181 @@ public class Fournisseur extends Agent {
         billets.add(offre);
     }
 
-    public void accepterOffre() {
-        if (offres == null || offres.isEmpty()) {
+    public void enchereOrganismesCoalition(List<Organisme> organismes) {
+
+        List<Organisme> participants =
+                new ArrayList<>(organismes);
+
+        // tri décroissant selon budget individuel ou coalition
+        participants.sort(
+                Comparator.comparing(
+                        (Organisme o) ->
+                                o.getCoalition()
+                                        ? o.budgetCoalition()
+                                        : o.getBudget()
+                ).reversed()
+        );
+
+        // création des coalitions
+        for(int i = 0; i < participants.size() - 1; ++i) {
+
+            for(int j = i + 1; j < participants.size(); ++j) {
+
+                if(!participants.get(i).getCoalition()) {
+
+                    participants.get(i)
+                            .proposerCoalition(participants.get(j));
+                }
+            }
+        }
+
+        // IMPORTANT :
+        // une coalition = un seul participant réel
+        Set<Coalition> coalitionsVues = new HashSet<>();
+
+        List<Organisme> participantsReels =
+                new ArrayList<>();
+
+        for(Organisme org : participants) {
+
+            // organisme seul
+            if(!org.getCoalition()) {
+
+                participantsReels.add(org);
+            }
+
+            // coalition pas encore représentée
+            else if(!coalitionsVues.contains(
+                    org.getCoalitionObj())) {
+
+                coalitionsVues.add(
+                        org.getCoalitionObj());
+
+                participantsReels.add(org);
+            }
+        }
+
+        int prixCourant = 100;
+
+        Organisme meilleur = null;
+
+        boolean progression = true;
+
+        while (progression) {
+
+            progression = false;
+
+            // IMPORTANT :
+            // utiliser participantsReels
+            for (Organisme org : participantsReels) {
+
+                int offre =
+                        org.surencherir(prixCourant);
+
+                if (offre == -1) {
+                    continue;
+                }
+
+                if (offre > prixCourant) {
+
+                    prixCourant = offre;
+                    meilleur = org;
+
+                    progression = true;
+
+                    if(org.getCoalition()) {
+
+                        System.out.println(
+                                "Coalition "
+                                        + org.getCoalitionObj().getId()
+                                        + " surenchérit à "
+                                        + offre
+                        );
+                    }
+                    else {
+
+                        System.out.println(
+                                "Organisme "
+                                        + org.getId()
+                                        + " surenchérit à "
+                                        + offre
+                        );
+                    }
+                }
+            }
+        }
+
+        if (meilleur == null) {
             return;
         }
 
-        Offre maximum = offres.getFirst();
+        Date debut = new Date();
 
-        for (Offre offre : offres) {
-            if (offre.etat() > maximum.etat()) {
-                maximum = offre;
-            }
-        }
-        Date dt = new Date();
         Calendar c = Calendar.getInstance();
-        c.setTime(dt);
+
+        c.setTime(debut);
+
         c.add(Calendar.DATE, 7);
-        dt = c.getTime();
-        ajouterOffre(new Billet(new Date(),dt,maximum.etat(),maximum.getExpediteur()));
 
-        maximum.getExpediteur().offreAcceptee(maximum.etat());
+        Date fin = c.getTime();
 
-        offres.clear();
-    }
+        if(meilleur.getCoalition()) {
 
-    public void enchereOrganismesCoalition(List<Organisme> organismes) {
+            ajouterOffre(
+                    new Billet(
+                            debut,
+                            fin,
+                            prixCourant,
+                            meilleur.getCoalitionObj()
+                    )
+            );
+        }
+        else {
 
+            ajouterOffre(
+                    new Billet(
+                            debut,
+                            fin,
+                            prixCourant,
+                            meilleur
+                    )
+            );
+        }
+
+        meilleur.offreAcceptee(prixCourant);
+
+        budget += prixCourant;
+
+        // affichage final
+        if(meilleur.getCoalition()) {
+
+            System.out.println(
+                    "Billet vendu à coalition "
+                            + meilleur.getCoalitionObj().getId()
+                            + " pour "
+                            + prixCourant
+            );
+
+            System.out.print("Membres : ");
+
+            meilleur.getMembres();
+        }
+        else {
+
+            System.out.println(
+                    "Billet vendu à organisme "
+                            + meilleur.getId()
+                            + " pour "
+                            + prixCourant
+            );
+        }
+
+        //il faut changer ça pour que ça tire des
+        //veleurs de coalition aléatoire pour rester ou se séparer
+        //conseil du prof
+        //for(Organisme org : organismes) {
+        //    org.setCoalition(null);
+        //}
     }
 
     public void proposerBillet(List<Personne> interesse) {
@@ -99,7 +248,16 @@ public class Fournisseur extends Agent {
 
             meilleur.offerAccepted(meilleureOffre);
 
-            billet.getOrganisme().rente(partOrganisme);
+            if(billet.appartientCoalition()) {
+
+                billet.getCoalition()
+                        .renteCoalition(partOrganisme);
+            }
+            else {
+
+                billet.getOrganisme()
+                        .rente(partOrganisme);
+            }
             budget += partFournisseur;
 
             billet.placeReservee();
@@ -166,13 +324,6 @@ public class Fournisseur extends Agent {
                     meilleur = org;
 
                     progression = true;
-
-                    System.out.println(
-                            "Organisme "
-                                    + org.getId()
-                                    + " surenchérit à "
-                                    + offre
-                    );
                 }
             }
         }
@@ -203,12 +354,5 @@ public class Fournisseur extends Agent {
         meilleur.offreAcceptee(prixCourant);
 
         budget += prixCourant;
-
-        System.out.println(
-                "Billet vendu à organisme "
-                        + meilleur.getId()
-                        + " pour "
-                        + prixCourant
-        );
     }
 }
