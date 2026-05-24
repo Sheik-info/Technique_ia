@@ -57,4 +57,57 @@ public class Coalition {
             o.ajouterBudget(part);
         }
     }
+
+    public static List<List<List<Organisme>>> partition(List<Organisme> organismes) {
+
+        List<List<List<Organisme>>> result = new ArrayList<>();
+
+        backtrack(organismes, 0, new ArrayList<>(), result);
+
+        return result;
+    }
+
+    private static void backtrack(
+            List<Organisme> organismes,
+            int index,
+            List<List<Organisme>> current,
+            List<List<List<Organisme>>> result) {
+
+        if(index == organismes.size()) {
+
+            List<List<Organisme>> partition = new ArrayList<>();
+
+            for(List<Organisme> coalition : current) {
+                partition.add(new ArrayList<>(coalition));
+            }
+
+            result.add(partition);
+            return;
+        }
+
+        Organisme orga = organismes.get(index);
+
+        // ajouter à une coalition existante
+        for(int i = 0; i < current.size(); ++i) {
+
+            List<Organisme> coalition = current.get(i);
+
+            coalition.add(orga);
+
+            backtrack(organismes, index + 1, current, result);
+
+            coalition.remove(coalition.size() - 1);
+        }
+
+        // nouvelle coalition
+        List<Organisme> nouvelleCoalition = new ArrayList<>();
+        nouvelleCoalition.add(orga);
+
+        current.add(nouvelleCoalition);
+
+        backtrack(organismes, index + 1, current, result);
+
+        current.remove(current.size() - 1);
+    }
+
 }

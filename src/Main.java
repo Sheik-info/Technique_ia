@@ -1,14 +1,20 @@
 import agents.Fournisseur;
 import agents.Organisme;
 import agents.Personne;
-import tools.Offre;
 
 import java.util.*;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main() {
 
+        // idée il faudrait plutot que les coalitions
+        //mettent tout leur budget qu'ils mettent chacun
+        // ce qu'ils sont pret à mettre dans la coalition
+        //en fonction des enchères actuelles
+
+        //aussi un agent qui mets trop peu dans la coallition
+        //fait casser la coalition ce qui peut être idéal
         List<Personne> personnes = new ArrayList<>();
         List<Organisme> organismes = new ArrayList<>();
         List<Fournisseur> fournisseurs = new ArrayList<>();
@@ -19,19 +25,15 @@ public class Main {
 
             if (i % 10 == 0) {
                 Organisme org = new Organisme(i / 10, 5000);
-                Fournisseur four = new Fournisseur((int)i / 10);
+                Fournisseur four = new Fournisseur(i / 10);
 
                 organismes.add(org);
                 fournisseurs.add(four);
             }
         }
 
-        Random rand = new Random();
-
         // Simulation (10 tours par exemple)
         for (int tour = 0; tour < 10; tour++) {
-
-            System.out.println("TOUR " + tour + ":");
 
             // PHASE 1 : enchères organismes
             for (Fournisseur f : fournisseurs) {
@@ -75,17 +77,58 @@ public class Main {
             System.out.println("gagnant personne n°"
                     +personnes.get(i).getId() +": " + personnes.get(i).getNbBillets() + " billets");
 
-            if(organismes.get(i).getCoalition()) {
-                System.out.print("gagnant organisme coalition ");
-                organismes.get(i).getMembres();
-                System.out.println(" : " + organismes.get(i).budgetCoalition() + " €");
-            }
-            else {
-                System.out.println("gagnant organisme n°"
-                        +organismes.get(i).getId() +": " + organismes.get(i).getBudget());
-            }
             System.out.println("gagnant fournisseur n°"
                     +fournisseurs.get(i).getId() +": " + fournisseurs.get(i).getBudget());
+        }
+        Set<Integer> coalitionsAffichees =
+                new HashSet<>();
+
+        int nbAffiches = 0;
+
+        for(Organisme org : organismes) {
+
+            if(nbAffiches >= 3) {
+                break;
+            }
+
+            // coalition
+            if(org.getCoalition()) {
+
+                int idCoalition =
+                        org.getCoalitionObj().getId();
+
+                // déjà affichée
+                if(coalitionsAffichees.contains(idCoalition)) {
+                    continue;
+                }
+
+                coalitionsAffichees.add(idCoalition);
+
+                System.out.print(
+                        "gagnant organisme coalition "
+                );
+
+                org.getMembres();
+
+                System.out.println(
+                        " : "
+                                + org.budgetCoalition()
+                                + " €"
+                );
+            }
+
+            // organisme seul
+            else {
+
+                System.out.println(
+                        "gagnant organisme n°"
+                                + org.getId()
+                                + ": "
+                                + org.getBudget()
+                );
+            }
+
+            nbAffiches++;
         }
     }
 }

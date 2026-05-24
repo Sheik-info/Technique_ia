@@ -26,8 +26,6 @@ public abstract class Acheteur extends Agent {
     @Override
     public abstract void recevoirOffre(Offre m);
 
-    public abstract Offre proposerOffre(Fournisseur exp, int price, List<Organisme> orga);
-
     public int getBudget() {
         return budget;
     }

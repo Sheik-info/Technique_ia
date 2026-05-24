@@ -20,29 +20,14 @@ public class Personne extends Acheteur {
     public void recevoirOffre(Offre m) {
     }
 
-    @Override
-    public Offre proposerOffre(Fournisseur exp, int price, List<Organisme> orga) {
-        return null;
-    }
-
     public void salaire() {
         Random rand = new Random();
-        budget += 50 + rand.nextInt(1400);
+        budget += 1000 + rand.nextInt(14000);
     }
 
     public void offerAccepted(int prixFinal) {
         budget -= prixFinal;
         nbBillets++;
-    }
-
-    public static int cooperation(Personne[] groupe, int prixBillet) {
-        int total = 0;
-
-        for (Personne p : groupe) {
-            total += p.contribution(prixBillet);
-        }
-
-        return total;
     }
 
     public int surencherir(int prixActuel) {
