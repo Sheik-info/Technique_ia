@@ -4,7 +4,6 @@ import tools.Coalition;
 import tools.Offre;
 import tools.Strategie;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -60,17 +59,19 @@ public class Organisme extends Acheteur {
     public static List<List<Organisme>> proposerCoalition(List<Organisme> dest) {
         List<List<List<Organisme>>> configs = Coalition.partition(dest);
         int indiceMaxCoalition = 0;
-        float totCoalLocal;
-        float maxCoalition = 0;
+        int totCoalLocal;
+        int maxCoalition = 0;
         int i = 0;
         for(List<List<Organisme>> o : configs) {
                 totCoalLocal = Organisme.valeurCoalition(o);
-                maxCoalition = Float.max(maxCoalition,totCoalLocal);
+                maxCoalition = Integer.max(maxCoalition,totCoalLocal);
                 if(maxCoalition == totCoalLocal) {
                     indiceMaxCoalition = i;
                 }
                 ++i;
         }
+
+        System.out.println(configs.get(indiceMaxCoalition));
 
         return configs.get(indiceMaxCoalition);
     }
@@ -101,33 +102,57 @@ public class Organisme extends Acheteur {
         }
     }
 
-    public static float valeurCoalition(
-            List<List<Organisme>> coalition) {
+    public static int valeurCoalition(
+            List<List<Organisme>> structure) {
 
-        float somme = 0;
+        int valeurTotale = 0;
 
-        for(List<Organisme> groupe : coalition) {
+        for(List<Organisme> coalition : structure) {
 
-            int budget = valeurCoalitionInt(groupe);
+            int budgetTotal = 0;
 
-            int taille = groupe.size();
+            int budgetMax = 0;
 
-            float synergie =
-                    1f + 0.4f * (taille - 1);
+            for(Organisme o : coalition) {
 
-            Random r = new Random();
+                budgetTotal += o.getBudget();
 
-            float gain =
-                    budget * synergie
-                            + r.nextInt(30000);
+                if(o.getBudget() > budgetMax) {
+                    budgetMax = o.getBudget();
+                }
+            }
 
-            float cout =
-                    20000f * taille * taille;
+            int taille = coalition.size();
 
-            somme += gain - cout;
+            // puissance économique
+            int valeur = budgetTotal / 1000;
+
+            // bonus coopération
+            valeur += taille * 12;
+
+            // organisme trop riche
+            if(budgetMax > 15000) {
+                valeur -= 20;
+            }
+
+            // coalition trop grande
+            if(taille >= 4) {
+                valeur -= 15;
+            }
+
+            // bornes
+            if(valeur < 0) {
+                valeur = 0;
+            }
+
+            if(valeur > 100) {
+                valeur = 100;
+            }
+
+            valeurTotale += valeur;
         }
 
-        return somme;
+        return valeurTotale;
     }
 
     public static int valeurCoalitionInt(List<Organisme> coalition) {
@@ -221,6 +246,11 @@ public class Organisme extends Acheteur {
 
     public void ajouterBudget(int montant) {
         budget += montant;
+    }
+
+    @Override
+    public String toString() {
+        return "Org" + id + " : " + budget;
     }
 
 }

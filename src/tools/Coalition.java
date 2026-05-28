@@ -42,18 +42,62 @@ public class Coalition {
 
     public void payer(int montant) {
 
-        int part = montant / membres.size();
+        int budgetTotal = budgetTotal();
 
-        for (Organisme o : membres) {
+        int sommePrelevee = 0;
+
+        for(int i = 0; i < membres.size(); ++i) {
+
+            Organisme o = membres.get(i);
+
+            int part;
+
+            // dernier membre -> corrige les erreurs d'arrondi
+            if(i == membres.size() - 1) {
+
+                part = montant - sommePrelevee;
+            }
+            else {
+
+                double ratio =
+                        (double) o.getBudget() / budgetTotal;
+
+                part = (int) (montant * ratio);
+
+                sommePrelevee += part;
+            }
+
             o.retirerBudget(part);
         }
     }
 
     public void renteCoalition(int montant) {
 
-        int part = montant / membres.size();
+        int budgetTotal = budgetTotal();
 
-        for (Organisme o : membres) {
+        int sommeDistribuee = 0;
+
+        for(int i = 0; i < membres.size(); ++i) {
+
+            Organisme o = membres.get(i);
+
+            int part;
+
+            // dernier membre -> correction arrondis
+            if(i == membres.size() - 1) {
+
+                part = montant - sommeDistribuee;
+            }
+            else {
+
+                double ratio =
+                        (double) o.getBudget() / budgetTotal;
+
+                part = (int) (montant * ratio);
+
+                sommeDistribuee += part;
+            }
+
             o.ajouterBudget(part);
         }
     }

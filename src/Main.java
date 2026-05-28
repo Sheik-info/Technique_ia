@@ -37,14 +37,7 @@ public class Main {
 
             // PHASE 1 : enchères organismes
             for (Fournisseur f : fournisseurs) {
-
-                if (tour < 5) {
-                    System.out.println("tour" + tour);
-                    f.enchereOrganismes(organismes);
-                }
-                else {
-                    f.enchereOrganismesCoalition(organismes);
-                }
+                f.enchereOrganismesCoalition(organismes);
             }
 
             // PHASE 2 : Vente aux personnes
@@ -73,7 +66,7 @@ public class Main {
         personnes.sort(Comparator.comparing(Personne::getNbBillets).reversed());
         organismes.sort(Comparator.comparing(Organisme::getBudget).reversed());
         fournisseurs.sort(Comparator.comparing(Fournisseur::getBudget).reversed());
-        for(int i=0; i<=2; ++i) {
+        for(int i=0; i<=4; ++i) {
             System.out.println("gagnant personne n°"
                     +personnes.get(i).getId() +": " + personnes.get(i).getNbBillets() + " billets");
 
@@ -87,7 +80,7 @@ public class Main {
 
         for(Organisme org : organismes) {
 
-            if(nbAffiches >= 3) {
+            if(nbAffiches >= 4) {
                 break;
             }
 
